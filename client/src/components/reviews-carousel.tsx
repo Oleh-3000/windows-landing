@@ -62,25 +62,16 @@ export default function ReviewsCarousel() {
   });
 
   const nextReview = () => {
-    setCurrentIndex((prev) => {
-      const maxIndex = Math.max(0, reviews.length - slidesToShow);
-      return prev >= maxIndex ? 0 : prev + 1;
-    });
+    setCurrentIndex((prev) => (prev + 1) % reviews.length);
   };
 
   const prevReview = () => {
-    setCurrentIndex((prev) => {
-      const maxIndex = Math.max(0, reviews.length - slidesToShow);
-      return prev <= 0 ? maxIndex : prev - 1;
-    });
+    setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
   };
 
   const goToSlide = (index: number) => {
-    const maxIndex = Math.max(0, reviews.length - slidesToShow);
-    setCurrentIndex(Math.min(index, maxIndex));
+    setCurrentIndex(index);
   };
-
-  const totalSlides = Math.ceil(reviews.length / slidesToShow);
 
   return (
     <section id="reviews" className="py-20 bg-slate-50">
@@ -100,14 +91,16 @@ export default function ReviewsCarousel() {
               className="flex transition-transform duration-500 ease-in-out"
               style={{ 
                 transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
-                width: `${(reviews.length * 100) / slidesToShow}%`
               }}
             >
               {reviews.map((review, index) => (
                 <div 
                   key={index} 
-                  className="px-3"
-                  style={{ width: `${100 / reviews.length}%` }}
+                  className="px-3 flex-shrink-0"
+                  style={{ 
+                    width: slidesToShow === 1 ? '100%' : 
+                           slidesToShow === 2 ? '50%' : '33.333%'
+                  }}
                 >
                   <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 text-center shadow-lg h-full" data-testid={`review-card-${index}`}>
                     <img 
@@ -136,7 +129,7 @@ export default function ReviewsCarousel() {
           </div>
           
           {/* Navigation Arrows */}
-          {reviews.length > slidesToShow && (
+          {reviews.length > 1 && (
             <>
               <button
                 onClick={prevReview}
@@ -156,20 +149,41 @@ export default function ReviewsCarousel() {
           )}
           
           {/* Dots Indicator */}
-          {totalSlides > 1 && (
-            <div className="flex justify-center mt-8 space-x-2">
-              {Array.from({ length: totalSlides }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index * slidesToShow)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    Math.floor(currentIndex / slidesToShow) === index ? 'bg-primary' : 'bg-slate-300 hover:bg-primary'
-                  }`}
-                  data-testid={`review-dot-${index}`}
-                />
-              ))}
-            </div>
-          )}
+          <div className="flex justify-center mt-8 space-x-2">
+            {reviews.map((_, index) => {
+              // Show dots based on slidesToShow
+              if (slidesToShow === 1) {
+                // Mobile: show dot for each review
+                return (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-colors ${
+                      currentIndex === index ? 'bg-primary' : 'bg-slate-300 hover:bg-primary'
+                    }`}
+                    data-testid={`review-dot-${index}`}
+                  />
+                );
+              } else {
+                // Desktop: show dots for groups
+                const groupIndex = Math.floor(index / slidesToShow);
+                const isFirstInGroup = index % slidesToShow === 0;
+                if (isFirstInGroup && groupIndex < Math.ceil(reviews.length / slidesToShow)) {
+                  return (
+                    <button
+                      key={`group-${groupIndex}`}
+                      onClick={() => goToSlide(groupIndex * slidesToShow)}
+                      className={`w-3 h-3 rounded-full transition-colors ${
+                        Math.floor(currentIndex / slidesToShow) === groupIndex ? 'bg-primary' : 'bg-slate-300 hover:bg-primary'
+                      }`}
+                      data-testid={`review-dot-${groupIndex}`}
+                    />
+                  );
+                }
+                return null;
+              }
+            }).filter(Boolean)}
+          </div>
         </div>
       </div>
     </section>
