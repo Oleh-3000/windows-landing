@@ -41,19 +41,46 @@ const reviews = [
 ];
 
 export default function ReviewsCarousel() {
-  const [currentReview, setCurrentReview] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(1);
+
+  // Calculate slides to show based on screen size
+  const updateSlidesToShow = () => {
+    if (window.innerWidth >= 1024) {
+      setSlidesToShow(3); // lg and above
+    } else if (window.innerWidth >= 768) {
+      setSlidesToShow(2); // md and above
+    } else {
+      setSlidesToShow(1); // mobile
+    }
+  };
+
+  useState(() => {
+    updateSlidesToShow();
+    window.addEventListener('resize', updateSlidesToShow);
+    return () => window.removeEventListener('resize', updateSlidesToShow);
+  });
 
   const nextReview = () => {
-    setCurrentReview((prev) => (prev + 1) % reviews.length);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, reviews.length - slidesToShow);
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
   };
 
   const prevReview = () => {
-    setCurrentReview((prev) => (prev - 1 + reviews.length) % reviews.length);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, reviews.length - slidesToShow);
+      return prev <= 0 ? maxIndex : prev - 1;
+    });
   };
 
-  const goToReview = (index: number) => {
-    setCurrentReview(index);
+  const goToSlide = (index: number) => {
+    const maxIndex = Math.max(0, reviews.length - slidesToShow);
+    setCurrentIndex(Math.min(index, maxIndex));
   };
+
+  const totalSlides = Math.ceil(reviews.length / slidesToShow);
 
   return (
     <section id="reviews" className="py-20 bg-slate-50">
@@ -67,31 +94,38 @@ export default function ReviewsCarousel() {
           </p>
         </div>
         
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-7xl mx-auto">
           <div className="overflow-hidden">
             <div 
               className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentReview * 100}%)` }}
+              style={{ 
+                transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
+                width: `${(reviews.length * 100) / slidesToShow}%`
+              }}
             >
               {reviews.map((review, index) => (
-                <div key={index} className="min-w-full flex-shrink-0 px-4">
-                  <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-8 text-center shadow-lg" data-testid={`review-card-${index}`}>
+                <div 
+                  key={index} 
+                  className="px-3"
+                  style={{ width: `${100 / reviews.length}%` }}
+                >
+                  <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-6 text-center shadow-lg h-full" data-testid={`review-card-${index}`}>
                     <img 
                       src={review.image} 
                       alt={`Відгук ${review.name}`}
-                      className="w-80 h-96 object-cover rounded-lg mx-auto mb-6 shadow-md"
+                      className="w-32 h-40 md:w-40 md:h-48 lg:w-48 lg:h-56 object-cover rounded-lg mx-auto mb-4 shadow-md"
                       data-testid={`review-image-${index}`}
                     />
-                    <h3 className="text-xl font-semibold text-slate-800 mb-2" data-testid={`review-name-${index}`}>
+                    <h3 className="text-lg md:text-xl font-semibold text-slate-800 mb-2" data-testid={`review-name-${index}`}>
                       {review.name}
                     </h3>
-                    <p className="text-slate-600 mb-4" data-testid={`review-text-${index}`}>
+                    <p className="text-slate-600 mb-4 text-sm md:text-base leading-relaxed" data-testid={`review-text-${index}`}>
                       {review.text}
                     </p>
                     <div className="flex justify-center">
                       <div className="flex text-yellow-400">
                         {[...Array(review.rating)].map((_, starIndex) => (
-                          <Star key={starIndex} className="h-5 w-5 fill-current" />
+                          <Star key={starIndex} className="h-4 w-4 md:h-5 md:w-5 fill-current" />
                         ))}
                       </div>
                     </div>
@@ -102,34 +136,40 @@ export default function ReviewsCarousel() {
           </div>
           
           {/* Navigation Arrows */}
-          <button
-            onClick={prevReview}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full w-12 h-12 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
-            data-testid="reviews-prev"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          <button
-            onClick={nextReview}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full w-12 h-12 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors"
-            data-testid="reviews-next"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
+          {reviews.length > slidesToShow && (
+            <>
+              <button
+                onClick={prevReview}
+                className="absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors z-10"
+                data-testid="reviews-prev"
+              >
+                <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+              </button>
+              <button
+                onClick={nextReview}
+                className="absolute right-2 md:right-0 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors z-10"
+                data-testid="reviews-next"
+              >
+                <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+              </button>
+            </>
+          )}
           
           {/* Dots Indicator */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {reviews.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToReview(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentReview ? 'bg-primary' : 'bg-slate-300 hover:bg-primary'
-                }`}
-                data-testid={`review-dot-${index}`}
-              />
-            ))}
-          </div>
+          {totalSlides > 1 && (
+            <div className="flex justify-center mt-8 space-x-2">
+              {Array.from({ length: totalSlides }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index * slidesToShow)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    Math.floor(currentIndex / slidesToShow) === index ? 'bg-primary' : 'bg-slate-300 hover:bg-primary'
+                  }`}
+                  data-testid={`review-dot-${index}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
