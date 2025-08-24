@@ -8,7 +8,6 @@ import { SiFacebook, SiInstagram, SiTelegram, SiViber } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -17,7 +16,6 @@ const contactFormSchema = z.object({
   name: z.string().min(2, "Ім'я повинно містити принаймні 2 символи"),
   phone: z.string().min(10, "Введіть коректний номер телефону"),
   email: z.string().email("Введіть коректний email").optional().or(z.literal("")),
-  service: z.string().optional(),
   message: z.string().optional(),
 });
 
@@ -32,7 +30,6 @@ export default function ContactSection() {
       name: "",
       phone: "",
       email: "",
-      service: "",
       message: "",
     },
   });
@@ -134,31 +131,6 @@ export default function ContactSection() {
                   )}
                 />
                 
-                <FormField
-                  control={form.control}
-                  name="service"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Тип послуги</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger data-testid="select-service">
-                            <SelectValue placeholder="Оберіть послугу" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="windows">Металопластикові вікна</SelectItem>
-                          <SelectItem value="doors">Балконні двері</SelectItem>
-                          <SelectItem value="balcony">Остекління балконів</SelectItem>
-                          <SelectItem value="repair">Ремонт вікон</SelectItem>
-                          <SelectItem value="blinds">Жалюзі та ролети</SelectItem>
-                          <SelectItem value="shutters">Захисні ролети</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 
                 <FormField
                   control={form.control}
