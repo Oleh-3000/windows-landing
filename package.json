@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:gh-pages": "vite build && cp .nojekyll dist/public/ && cp client/public/404.html dist/public/",
     "preview": "vite preview"
   },
   "dependencies": {
