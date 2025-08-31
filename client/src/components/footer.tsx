@@ -1,5 +1,6 @@
 import { Home, MapPin, Phone, Mail } from "lucide-react";
 import { SiFacebook, SiInstagram, SiTelegram } from "react-icons/si";
+import Logo from "./logo";
 
 export default function Footer() {
   const phoneNumber = import.meta.env.VITE_PHONE_NUMBER || "+38 (050) 123-45-67";
@@ -26,8 +27,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <Home className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold">ВікнаПлюс</span>
+              <Logo />
             </div>
             <p className="text-slate-300 mb-4" data-testid="footer-description">
               Професійне встановлення металопластикових вікон у Миколаєві з 2008 року.

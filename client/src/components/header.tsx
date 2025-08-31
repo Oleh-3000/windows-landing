@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Phone, Home } from "lucide-react";
+import Logo from "./logo";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,8 +24,7 @@ export default function Header() {
       <nav className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Home className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold text-slate-800">ВікнаПлюс</span>
+            <Logo />
           </div>
           
           {/* Desktop Navigation */}
