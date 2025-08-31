@@ -50,4 +50,5 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
+  base: process.env.NODE_ENV === 'production' ? '/windows-landing/' : '/',
 });
