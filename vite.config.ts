@@ -50,5 +50,5 @@ export default defineConfig({
       deny: ["**/.*"],
     },
   },
-  base: '/windows-lending/',
+  base: '/windows-landing/',
 });
