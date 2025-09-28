@@ -4,6 +4,7 @@ import AboutSection from "@/components/about-section";
 import ServicesSection from "@/components/services-section";
 import GallerySection from "@/components/gallery-section";
 import ReviewsCarousel from "@/components/reviews-carousel";
+import PartnersCarousel from "@/components/partners-carousel";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
 import BackToTop from "@/components/back-to-top";
@@ -18,6 +19,7 @@ export default function Home() {
       <ServicesSection />
       <GallerySection />
       <ReviewsCarousel />
+      <PartnersCarousel />
       <ContactSection />
       <Footer />
       <ContactButton />
