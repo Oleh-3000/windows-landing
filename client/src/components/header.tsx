@@ -6,6 +6,13 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const phoneNumber = import.meta.env.VITE_PHONE_NUMBER || "+38 (050) 123-45-67";
+  
+  // Отладочная информация (можно удалить после проверки)
+  console.log("Environment variables:", {
+    VITE_PHONE_NUMBER: import.meta.env.VITE_PHONE_NUMBER,
+    VITE_EMAIL: import.meta.env.VITE_EMAIL,
+    VITE_ADDRESS: import.meta.env.VITE_ADDRESS
+  });
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);

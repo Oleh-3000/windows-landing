@@ -7,6 +7,7 @@ import ReviewsCarousel from "@/components/reviews-carousel";
 import ContactSection from "@/components/contact-section";
 import Footer from "@/components/footer";
 import BackToTop from "@/components/back-to-top";
+import ContactButton from "@/components/contact-button";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <ReviewsCarousel />
       <ContactSection />
       <Footer />
+      <ContactButton />
       <BackToTop />
     </div>
   );
