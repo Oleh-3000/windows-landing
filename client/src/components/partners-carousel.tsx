@@ -1,53 +1,61 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import vekaLogo from "@assets/images/partners/veka-logo.svg";
+import rehauLogo from "@assets/images/partners/rehau-logo.svg";
+import kbeLogo from "@assets/images/partners/kbe-logo.svg";
+import schucoLogo from "@assets/images/partners/schuco-logo.svg";
+import salamanderLogo from "@assets/images/partners/salamander-logo.svg";
+import aluplastLogo from "@assets/images/partners/aluplast-logo.svg";
+import trocalLogo from "@assets/images/partners/trocal-logo.svg";
+import deceuninckLogo from "@assets/images/partners/deceuninck-logo.svg";
 
 const partners = [
   {
     id: 1,
     name: "Rehau",
-    logo: "/assets/images/partners/rehau-logo.svg",
+    logo: rehauLogo,
     description: "Німецький виробник профілів для вікон"
   },
   {
     id: 2,
     name: "Veka",
-    logo: "/assets/images/partners/veka-logo.svg",
+    logo: vekaLogo,
     description: "Світовий лідер у виробництві ПВХ-профілів"
   },
   {
     id: 3,
     name: "KBE",
-    logo: "/assets/images/partners/kbe-logo.svg",
+    logo: kbeLogo,
     description: "Якісні віконні системи з Німеччини"
   },
   {
     id: 4,
     name: "Schüco",
-    logo: "/assets/images/partners/schuco-logo.svg",
+    logo: schucoLogo,
     description: "Інноваційні рішення для вікон та дверей"
   },
   {
     id: 5,
     name: "Salamander",
-    logo: "/assets/images/partners/salamander-logo.svg",
+    logo: salamanderLogo,
     description: "Преміум віконні системи з Німеччини"
   },
   {
     id: 6,
     name: "Aluplast",
-    logo: "/assets/images/partners/aluplast-logo.svg",
+    logo: aluplastLogo,
     description: "Інноваційні рішення для алюмінієвих профілів"
   },
   {
     id: 7,
     name: "Trocal",
-    logo: "/assets/images/partners/trocal-logo.svg",
+    logo: trocalLogo,
     description: "Якісні віконні системи з Європи"
   },
   {
     id: 8,
     name: "Deceuninck",
-    logo: "/assets/images/partners/deceuninck-logo.svg",
+    logo: deceuninckLogo,
     description: "Сучасні рішення для вікон та дверей"
   }
 ];
