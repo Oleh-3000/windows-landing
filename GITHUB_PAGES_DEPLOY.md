@@ -78,7 +78,7 @@ base: process.env.NODE_ENV === 'production' ? '/windows-landing/' : '/'
 ### **Роутинг**
 Используется `wouter` с базовым путем для GitHub Pages:
 ```typescript
-const basePath = import.meta.env.BASE_URL || '/';
+const basePath = BASE_URL;
 <Router base={basePath}>
 ```
 

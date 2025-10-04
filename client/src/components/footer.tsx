@@ -1,14 +1,15 @@
 import { Home, MapPin, Phone, Mail } from "lucide-react";
 import { SiFacebook, SiInstagram, SiTelegram } from "react-icons/si";
 import Logo from "./logo";
+import { PHONE_NUMBER, EMAIL, ADDRESS, FACEBOOK_URL, INSTAGRAM_URL, TELEGRAM_URL } from "@/constants";
 
 export default function Footer() {
-  const phoneNumber = import.meta.env.VITE_PHONE_NUMBER || "+38 (050) 123-45-67";
-  const email = import.meta.env.VITE_EMAIL || "info@viknaplus.com";
-  const address = import.meta.env.VITE_ADDRESS || "м. Миколаїв, вул. Центральна, 123";
-  const facebookUrl = import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/viknaplus";
-  const instagramUrl = import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/viknaplus";
-  const telegramUrl = import.meta.env.VITE_TELEGRAM_URL || "https://t.me/viknaplus";
+  const phoneNumber = PHONE_NUMBER;
+  const email = EMAIL;
+  const address = ADDRESS;
+  const facebookUrl = FACEBOOK_URL;
+  const instagramUrl = INSTAGRAM_URL;
+  const telegramUrl = TELEGRAM_URL;
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -33,33 +34,39 @@ export default function Footer() {
               Професійне встановлення металопластикових вікон у Миколаєві з 2008 року.
             </p>
             <div className="flex space-x-4">
-              <a 
-                href={facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
-                data-testid="footer-facebook"
-              >
-                <SiFacebook className="h-6 w-6" />
-              </a>
-              <a 
-                href={instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
-                data-testid="footer-instagram"
-              >
-                <SiInstagram className="h-6 w-6" />
-              </a>
-              <a 
-                href={telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-slate-400 hover:text-white transition-colors"
-                data-testid="footer-telegram"
-              >
-                <SiTelegram className="h-6 w-6" />
-              </a>
+              {facebookUrl && (
+                <a 
+                  href={facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors"
+                  data-testid="footer-facebook"
+                >
+                  <SiFacebook className="h-6 w-6" />
+                </a>
+              )}
+              {instagramUrl && (
+                <a 
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors"
+                  data-testid="footer-instagram"
+                >
+                  <SiInstagram className="h-6 w-6" />
+                </a>
+              )}
+              {telegramUrl && (
+                <a 
+                  href={telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors"
+                  data-testid="footer-telegram"
+                >
+                  <SiTelegram className="h-6 w-6" />
+                </a>
+              )}
             </div>
           </div>
           

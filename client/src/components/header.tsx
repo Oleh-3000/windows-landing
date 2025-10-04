@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Phone, Home } from "lucide-react";
 import Logo from "./logo";
+import { PHONE_NUMBER } from "@/constants";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const phoneNumber = import.meta.env.VITE_PHONE_NUMBER || "+38 (050) 123-45-67";
+  const phoneNumber = PHONE_NUMBER;
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);

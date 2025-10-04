@@ -8,6 +8,7 @@ import { SiFacebook, SiInstagram, SiTelegram, SiViber } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { PHONE_NUMBER, PHONE_NUMBER_2, EMAIL, ADDRESS, FACEBOOK_URL, INSTAGRAM_URL, TELEGRAM_URL, VIBER_URL } from "@/constants";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -59,14 +60,14 @@ export default function ContactSection() {
     contactMutation.mutate(data);
   };
 
-  const phoneNumber = import.meta.env.VITE_PHONE_NUMBER || "+38 (050) 123-45-67";
-  const phoneNumber2 = import.meta.env.VITE_PHONE_NUMBER_2 || "+38 (063) 123-45-67";
-  const email = import.meta.env.VITE_EMAIL || "info@viknaplus.com";
-  const address = import.meta.env.VITE_ADDRESS || "м. Миколаїв, вул. Центральна, 123";
-  const facebookUrl = import.meta.env.VITE_FACEBOOK_URL || "https://facebook.com/viknaplus";
-  const instagramUrl = import.meta.env.VITE_INSTAGRAM_URL || "https://instagram.com/viknaplus";
-  const telegramUrl = import.meta.env.VITE_TELEGRAM_URL || "https://t.me/viknaplus";
-  const viberUrl = import.meta.env.VITE_VIBER_URL || "viber://chat?number=%2B380501234567";
+  const phoneNumber = PHONE_NUMBER;
+  const phoneNumber2 = PHONE_NUMBER_2;
+  const email = EMAIL;
+  const address = ADDRESS;
+  const facebookUrl = FACEBOOK_URL;
+  const instagramUrl = INSTAGRAM_URL;
+  const telegramUrl = TELEGRAM_URL;
+  const viberUrl = VIBER_URL;
 
   return (
     <section id="contact" className="py-20 bg-white">
@@ -201,10 +202,15 @@ export default function ContactSection() {
                     <p className="text-slate-600">
                       <a href={`tel:${phoneNumber.replace(/\s/g, '')}`} className="hover:text-primary transition-colors">
                         {phoneNumber}
-                      </a><br/>
-                      <a href={`tel:${phoneNumber2.replace(/\s/g, '')}`} className="hover:text-primary transition-colors">
-                        {phoneNumber2}
                       </a>
+                      {phoneNumber2 && (
+                        <>
+                          <br/>
+                          <a href={`tel:${phoneNumber2.replace(/\s/g, '')}`} className="hover:text-primary transition-colors">
+                            {phoneNumber2}
+                          </a>
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -240,47 +246,57 @@ export default function ContactSection() {
             </div>
             
             {/* Social Media */}
-            <div>
-              <h4 className="font-semibold text-slate-800 mb-4" data-testid="social-media-title">
-                Ми в соціальних мережах
-              </h4>
-              <div className="flex space-x-4">
-                <a 
-                  href={facebookUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-600 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
-                  data-testid="social-facebook"
-                >
-                  <SiFacebook className="h-6 w-6" />
-                </a>
-                <a 
-                  href={instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:opacity-90 transition-opacity"
-                  data-testid="social-instagram"
-                >
-                  <SiInstagram className="h-6 w-6" />
-                </a>
-                <a 
-                  href={telegramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-500 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
-                  data-testid="social-telegram"
-                >
-                  <SiTelegram className="h-6 w-6" />
-                </a>
-                <a 
-                  href={viberUrl}
-                  className="bg-purple-600 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:bg-purple-700 transition-colors"
-                  data-testid="social-viber"
-                >
-                  <SiViber className="h-6 w-6" />
-                </a>
+            {(facebookUrl || instagramUrl || telegramUrl || viberUrl) && (
+              <div>
+                <h4 className="font-semibold text-slate-800 mb-4" data-testid="social-media-title">
+                  Ми в соціальних мережах
+                </h4>
+                <div className="flex space-x-4">
+                {facebookUrl && (
+                  <a 
+                    href={facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-600 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
+                    data-testid="social-facebook"
+                  >
+                    <SiFacebook className="h-6 w-6" />
+                  </a>
+                )}
+                {instagramUrl && (
+                  <a 
+                    href={instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:opacity-90 transition-opacity"
+                    data-testid="social-instagram"
+                  >
+                    <SiInstagram className="h-6 w-6" />
+                  </a>
+                )}
+                {telegramUrl && (
+                  <a 
+                    href={telegramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-blue-500 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"
+                    data-testid="social-telegram"
+                  >
+                    <SiTelegram className="h-6 w-6" />
+                  </a>
+                )}
+                {viberUrl && (
+                  <a 
+                    href={viberUrl}
+                    className="bg-purple-600 text-white w-12 h-12 rounded-lg flex items-center justify-center hover:bg-purple-700 transition-colors"
+                    data-testid="social-viber"
+                  >
+                    <SiViber className="h-6 w-6" />
+                  </a>
+                )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

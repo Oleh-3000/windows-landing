@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Phone } from "lucide-react";
+import { PHONE_NUMBER } from "@/constants";
 
 const slides = [
   {
@@ -18,7 +19,7 @@ const slides = [
 
 export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const phoneNumber = import.meta.env.VITE_PHONE_NUMBER || "+38 (050) 123-45-67";
+  const phoneNumber = PHONE_NUMBER;
 
   useEffect(() => {
     const interval = setInterval(() => {
