@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useMutation } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Ім'я повинно містити мінімум 2 символи"),
@@ -34,8 +37,8 @@ interface ContactModalProps {
 }
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -45,15 +48,16 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     },
   });
 
-  const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    
-    try {
-      // Симуляция отправки формы
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log("Form data:", data);
+  const contactMutation = useMutation({
+    mutationFn: async (data: ContactFormData) => {
+      return apiRequest("POST", "/api/contact", data);
+    },
+    onSuccess: () => {
       setIsSubmitted(true);
+      toast({
+        title: "Дякуємо!",
+        description: "Ваша заявка надіслана. Ми зв'яжемося з вами найближчим часом.",
+      });
       
       // Сброс формы через 2 секунды
       setTimeout(() => {
@@ -61,15 +65,23 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         form.reset();
         onClose();
       }, 2000);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    },
+    onError: (error) => {
+      toast({
+        title: "Помилка",
+        description: "Не вдалося надіслати заявку. Спробуйте ще раз.",
+        variant: "destructive",
+      });
+      console.error("Contact form error:", error);
+    },
+  });
+
+  const onSubmit = (data: ContactFormData) => {
+    contactMutation.mutate(data);
   };
 
   const handleClose = () => {
-    if (!isSubmitting) {
+    if (!contactMutation.isPending) {
       setIsSubmitted(false);
       form.reset();
       onClose();
@@ -136,12 +148,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   type="button"
                   variant="outline"
                   onClick={handleClose}
-                  disabled={isSubmitting}
+                  disabled={contactMutation.isPending}
                 >
                   Скасувати
                 </Button>
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? (
+                <Button type="submit" disabled={contactMutation.isPending}>
+                  {contactMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Відправка...
